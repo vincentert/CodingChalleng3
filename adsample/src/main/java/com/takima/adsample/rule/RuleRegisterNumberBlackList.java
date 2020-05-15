@@ -3,6 +3,9 @@ package com.takima.adsample.rule;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -18,9 +21,12 @@ public class RuleRegisterNumberBlackList implements IadSampleRule {
 	@Autowired
 	BlackListClientService blackListClientService;
 		
+    private ExecutorService executor 
+    = Executors.newSingleThreadExecutor();
+	
 	@Override
-	public Optional<Rule> validate(AdSample adSample) throws InterruptedException, ExecutionException, TimeoutException {
-		
+	public Future<Optional<Rule>> validate(AdSample adSample) throws InterruptedException, ExecutionException, TimeoutException {
+		return executor.submit(() -> {
 			Rule rule = null;
 			
 			String eanCode = adSample.getItem().getEanCode();
@@ -30,6 +36,7 @@ public class RuleRegisterNumberBlackList implements IadSampleRule {
 			if (quotationClient.contains(eanCode)) rule = Rule.RULE_REGISTER_NUMBER_BLACKLIST;
 			
 			return Optional.ofNullable(rule);
+		});
 
 	}
 

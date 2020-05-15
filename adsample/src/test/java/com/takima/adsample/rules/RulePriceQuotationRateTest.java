@@ -27,7 +27,7 @@ public class RulePriceQuotationRateTest {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.setPrice(33000l);
-		assertFalse(rulePriceQuotationRate.validate(adSample).isPresent());
+		assertFalse(rulePriceQuotationRate.validate(adSample).get().isPresent());
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ public class RulePriceQuotationRateTest {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.setPrice(50000l);
-		assertTrue(rulePriceQuotationRate.validate(adSample).isPresent());
+		assertTrue(rulePriceQuotationRate.validate(adSample).get().isPresent());
 	}
 
 }

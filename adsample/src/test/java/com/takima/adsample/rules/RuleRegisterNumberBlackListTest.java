@@ -27,7 +27,7 @@ public class RuleRegisterNumberBlackListTest {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.getItem().setEanCode("7-7777777-199617");
-		assertFalse(RuleRegisterNumberBlackList.validate(adSample).isPresent());
+		assertFalse(RuleRegisterNumberBlackList.validate(adSample).get().isPresent());
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ public class RuleRegisterNumberBlackListTest {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.getItem().setEanCode("9-782940-199617");
-		assertTrue(RuleRegisterNumberBlackList.validate(adSample).isPresent());
+		assertTrue(RuleRegisterNumberBlackList.validate(adSample).get().isPresent());
 	}
 
 }

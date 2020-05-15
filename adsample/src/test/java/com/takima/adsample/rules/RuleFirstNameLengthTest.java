@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,17 @@ public class RuleFirstNameLengthTest {
 	RuleFirstNameLength ruleFirstNameLength;
 	
 	@Test
-	void ValideTest() throws IOException, URISyntaxException {
+	void ValideTest() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");	
 		adSample.getContacts().setFirstName("abe");
-		assertFalse(ruleFirstNameLength.validate(adSample).isPresent());
+		assertFalse(ruleFirstNameLength.validate(adSample).get().isPresent());
 	}
 	
 	@Test
-	void NotValideTest() throws IOException, URISyntaxException {
+	void NotValideTest() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");	
 		adSample.getContacts().setFirstName("ab");
-		assertTrue(ruleFirstNameLength.validate(adSample).isPresent());
+		assertTrue(ruleFirstNameLength.validate(adSample).get().isPresent());
 	}
 
 }

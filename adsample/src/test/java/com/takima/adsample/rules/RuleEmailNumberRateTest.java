@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +22,19 @@ public class RuleEmailNumberRateTest {
 	RuleEmailNumberRate ruleEmailNumberRate;
 	
 	@Test
-	void validateTest() throws IOException, URISyntaxException {
+	void validateTest() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.getContacts().setEmail("vincentgiraud88@gmail.com");;
-		assertFalse(ruleEmailNumberRate.validate(adSample).isPresent());
+		assertFalse(ruleEmailNumberRate.validate(adSample).get().isPresent());
 	}
 	
 	@Test
-	void NotValideTest() throws IOException, URISyntaxException {
+	void NotValideTest() throws IOException, URISyntaxException, InterruptedException, ExecutionException {
 		AdSample adSample = UtilParser.parseAdSample("./src/main/resources/ad-sample.json");
 		
 		adSample.getContacts().setEmail("8888888888ab@gmail.com");
-		assertTrue(ruleEmailNumberRate.validate(adSample).isPresent());
+		assertTrue(ruleEmailNumberRate.validate(adSample).get().isPresent());
 	}
 
 }

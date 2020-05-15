@@ -2,6 +2,9 @@ package com.takima.adsample.rule;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -11,8 +14,13 @@ import com.takima.adsample.entity.AdSample;
 @Component
 public class RuleEmailNumberRate implements IadSampleRule {
 
+    private ExecutorService executor 
+    = Executors.newSingleThreadExecutor();
+	
 	@Override
-	public Optional<Rule> validate(AdSample adSample) {
+	public Future<Optional<Rule>> validate(AdSample adSample) {
+		
+		return executor.submit(() -> {
 		Rule rule = null;
 
 		String email = adSample.getContacts().getEmail();
@@ -36,6 +44,7 @@ public class RuleEmailNumberRate implements IadSampleRule {
 
 		}
 		return Optional.ofNullable(rule);
+		});
 	}
 
 }
